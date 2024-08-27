@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Al-Lumery</title>
+    <!-- for icons  -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- bootstrap  -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- for swiper slider  -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <!-- fancy box  -->
+    <link rel="stylesheet" href="assets/css/jquery.fancybox.min.css">
+
+    <!-- alpine js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- custom css  -->
+    <link rel="stylesheet" href="style.css">
+    <!-- PWA -->
+
+
+</head>
+
+<body class="body-fixed">
+    <!-- start of header  -->
+    <header class="site-header" x-data>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header-logo">
+                        <a href="#">
+                            <img src="logo1.png" width="130" height="50" alt="Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <div class="main-navigation">
+                        <div class="header-right">
+                            <a href="#" id="shopping-cart-button" class="header-btn ">
+                                <i class="uil uil-shopping-bag"></i>
+                                <span class="cart-number" x-show="$store.cart.quantity" x-text="$store.cart.quantity"></span>
+                            </a>
+                            <a href="/images.html" class="header-btn ">
+                                <i class="uil uil-images"></i>
+                            </a>
+                            <a href="/about.html" class="header-btn ">
+                                <i class="uil uil-store"></i>
+                            </a>
+                            <!-- <a href="javascript:void(0)" class="header-btn">
+                                <i class="uil uil-user-md"></i> -->
+
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shopping Cart start -->
+                <div class="shopping-cart" :class="{ 'height-auto': !$store.cart.items.length }">
+                    <template x-for="(item, index) in $store.cart.items" x-key="index">
+                    <div class="cart-item">
+                        <img :src="`${item.img}`" :alt="item.name">
+                        <div class="item-detail">
+                            <h3><span x-text="item.varian"></span><span style=" margin-left: 5px;" x-text="item.size"></span></h3>
+                            <div class="item-price">
+                                <span  x-text="rupiah(item.price)"></span>
+                                <button id="remove" @click="$store.cart.remove(item.id)">&minus;</button>
+                                <span x-text="item.quantity"></span>
+                                <button id="add" @click="$store.cart.add(item)">&plus;</button> &equals;
+                                <span x-text="rupiah(item.total)"></span>
+                            </div>
+                        </div>
+                    </div>
+                    </template>
+                    <div style="margin:10px; text-align: center;">
+                        <h4 x-show="!$store.cart.items.length">Keranjang Kosong !</h4>
+                        <h4 x-show="$store.cart.items.length" style="font-size: 18px;">Total : <span x-text="rupiah($store.cart.total)"></span></h4>
+                    </div>
+
+                    <div class="form-container" x-show="$store.cart.items.length">
+                        <form action="" id="checkoutForm">
+                            <h5>Costmer Detail</h5>
+
+                            <input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
+                            <input type="hidden" name="total" x-model="$store.cart.total">
+
+                            <label for="name">
+                                <span>Nama :</span>
+                                <input type="text" name="name" id="name">
+                            </label>
+                            <label for="nomor">
+                                <span>No.Hp :</span>
+                                <input type="tel" name="nomor" id="nomor" autocomplete="off">
+                            </label>
+                            <label for="alamat">
+                                <span>Alamat :</span>
+                                <input type="text" name="alamat" id="alamat">
+                            </label>
+                            
+                            <button class="checkout-button disabled" type="submit" id="checkout-button" >Checkout</button>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- Shopping Cart end -->
+            </div>
+        </div>
+    </header>
+    <!-- header ends  -->
+
+    <div id="viewport">
+        <div id="js-scroll-content">
+            <section style="background-image: url(assets/images/menu-bg.png);"
+                class="our-menu section bg-light repeat-img" id="menu">
+                <div class="sec-wp">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="sec-title text-center mb-5 mt-5">
+                                    <p class="sec-sub-title mb-3">our menu</p>
+                                    <h2 class="h3-title">Open Order <span></span></h2>
+                                    <div class="sec-title-shape mb-4">
+                                        <img src="assets/images/title-shape.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-tab-wp">
+                            <div class="row">
+                                <div class="col-lg-12 m-auto">
+                                    <div class="menu-tab text-center">
+                                        <ul class="filters">
+                                            <div class="filter-active"></div>
+                                            <li class="filter" data-filter=".All, .Chocolate, .Greentea, .Tiramisu, .Sosis-Sapi">
+                                                <!-- <img src="assets/images/menu-1.png" alt=""> -->
+                                                All
+                                            </li>
+                                            <li class="filter" data-filter=".Chocolate">
+                                                <!-- <img src="assets/images/menu-2.png" alt=""> -->
+                                                Chocolate
+                                            </li>
+                                            <li class="filter" data-filter=".Greentea">
+                                                <!-- <img src="assets/images/menu-3.png" alt=""> -->
+                                                Green tea
+                                            </li>
+                                            <li class="filter" data-filter=".Tiramisu">
+                                                <!-- <img src="assets/images/menu-4.png" alt=""> -->
+                                                Tiramisu
+                                            </li>
+                                            <li class="filter" data-filter=".Sosis-Sapi">
+                                                <!-- <img src="assets/images/menu-4.png" alt=""> -->
+                                                Rostel
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="menu-list-row" x-data="products">
+                            <div class="row g-xxl-5 bydefault_show" id="menu-dish">
+                                <template x-for="(item, index) in items" x-key="index">
+                                <div class="col-lg-4 col-sm-6 dish-box-wp " :class="item.varian" data-cat="item.varian">
+                                    <div class="dish-box text-center">
+                                        <div class="dist-img">
+                                            <img :src="`${item.img}`" :alt="item.varian">
+                                        </div>
+                                        <div class="dish-title">
+                                            <h6 x-text="item.name"></h6>
+                                        </div>
+                                        <div class="dish-info">
+                                            <ul>
+                                                <li>
+                                                    <p>Varian</p>
+                                                    <b x-text="item.varian"></b>
+                                                </li>
+                                                <li>
+                                                    <p>Ukuran</p>
+                                                    <b x-text="item.size"></b>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="dist-bottom-row">
+                                            <ul>
+                                                <li>
+                                                    <b x-text="rupiah(item.price)"></b>
+                                                </li>
+                                                <li>
+                                                    <button class="dish-add-btn" @click.prevent="$store.cart.add(item)">
+                                                        <i class="uil uil-plus"></i>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="book-table section bg-light">
+                <div class="book-table-shape">
+                    <img src="assets/images/table-leaves-shape.png" alt="">
+                </div>
+
+                <div class="book-table-shape book-table-shape2">
+                    <img src="assets/images/table-leaves-shape.png" alt="">
+                </div>
+
+                <div class="sec-wp">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="sec-title text-center mb-5">
+                                    <p class="sec-sub-title mb-3">Open Reseller</p>
+                                    <h2 class="h3-title">Join Reseller</h2>
+                                    <div class="sec-title-shape mb-4">
+                                        <img src="assets/images/title-shape.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="book-table-info">
+                            <div class="row align-items-center">
+                                <div class="col-lg-4">
+                                    <div class="table-title ">
+                                        <h3 class="text-center">Benefit</h3>
+                                        <p style="font-size: 13px;font-style: italic;">1.Harga Sangat Murah.</p>
+                                        <p style="font-size: 13px;font-style: italic;">2.Menggunakan Brand Anda Sendiri.
+                                        </p>
+                                        <p style="font-size: 13px;font-style: italic;">3.Gratis Desain Logo.</p>
+                                        <p style="font-size: 13px;font-style: italic;">4.Mendapatkan Hadiah sesuai
+                                            ketentuan yang berlaku.</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="call-now text-center">
+                                        <i class="uil uil-whatsapp"></i>
+                                        <p>Klik Nomor Dibawah!</p>
+                                        <a href="https://wa.me/6285761853324/">085761853324</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="table-title text-center">
+                                        <h3>Jam Operasional</h3>
+                                        <p>09:00 - 22:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+
+
+
+
+            <!-- footer starts  -->
+            <footer class="site-footer" id="contact">
+                <div class="top-footer section">
+                    <div class="sec-wp">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="footer-info">
+                                        <div class="footer-logo text-center">
+                                            <a href="index.html">
+                                                <img style="width: 80%;" src="logo1.png" alt="">
+                                            </a>
+                                        </div>
+                                        <p class="text-center">Temukan Kenikmatan Tanpa Batas dengan Jajanan Serba
+                                            Lumer!
+                                        </p>
+                                        <div class="social-icon text-center">
+                                            <ul>
+                                                <li>
+                                                    <a href="https://facebook.com/alumerylampung/">
+                                                        <i class="uil uil-facebook-f"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://www.instagram.com/allumery_lampung/">
+                                                        <i class="uil uil-instagram"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://wa.me/6285761853324/">
+                                                        <i class="uil uil-whatsapp"></i>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 hidden">
+                                    <div class="footer-flex-box">
+                                        <div class="footer-table-info text-center">
+                                            <h3 class="h3-title">Jam Operasional</h3>
+                                            <ul>
+                                                <li><i></i> Setiap Hari</li>
+                                                <li><i class="uil uil-clock"></i> 09:00 - 22:00</li>
+                                            </ul>
+                                        </div>
+                                        <div class="footer-menu text-center">
+                                            <h3 class="h3-title">Links</h3>
+                                            <ul class="column-2">
+                                                <li><a href="#about">About</a></li>
+                                                <li><a href="#menu">Shoping</a></li>
+                                                <li><a href="#contact">Gallery</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="footer-menu  text-center">
+                                            <h3 class="h3-title">Info</h3>
+                                            <ul>
+                                                <li>Install aplikasi di halaman <b>About</b></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <div class="copyright-text">
+                                    <p>Copyright &copy; 2024 <span class="name">dickyaliansyah</span>All Rights
+                                        Reserved.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="scrolltop"><i class="uil uil-angle-up"></i></button>
+                    </div>
+                </div>
+            </footer>
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+    <!-- jquery  -->
+    <script src="assets/js/jquery-3.5.1.min.js"></script>
+    <!-- bootstrap -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+
+    <!-- fontawesome  -->
+    <script src="assets/js/font-awesome.min.js"></script>
+
+    <!-- swiper slider  -->
+    <script src="assets/js/swiper-bundle.min.js"></script>
+
+    <!-- mixitup -- filter  -->
+    <script src="assets/js/jquery.mixitup.min.js"></script>
+
+    <!-- fancy box  -->
+
+    <!-- parallax  -->
+    <script src="assets/js/parallax.min.js"></script>
+
+    <!-- gsap  -->
+    <script src="assets/js/gsap.min.js"></script>
+
+    <!-- scroll trigger  -->
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <!-- scroll to plugin  -->
+    <script src="assets/js/ScrollToPlugin.min.js"></script>
+    <!-- rellax  -->
+    <!-- <script src="assets/js/rellax.min.js"></script>
+    <script src="assets/js/rellax-custom.js"></script> -->
+    <!-- smooth scroll  -->
+    <script src="assets/js/smooth-scroll.js"></script>
+    <!-- custom js  -->
+    <script src="main.js"></script>
+    <script src="src/app.js"></script>
+    <!-- alpine.js -->
+
+
+</body>
+
+</html>
